@@ -37,7 +37,7 @@ class _WhatsAppHomeState extends State<WhatsAppHome> with SingleTickerProviderSt
        bottom: new TabBar(
          controller: _tabController,
          tabs: <Widget>[
-           new Tab(icon: new Icon(Icons.camera_alt)),
+           new Tab(icon: new Icon(Icons.camera_alt),),
            new Tab(text: "CHATS"),
            new Tab(text: "ESTADOS"),
            new Tab(text: "LLAMADAS",)

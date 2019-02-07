@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat/common/HttpHandler.dart';
 import 'package:flutter_chat/models/contacto_model.dart';
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
+
 
 
 class Camera extends StatefulWidget {  
@@ -14,6 +16,7 @@ class Camera extends StatefulWidget {
 class _CameraState extends State<Camera> {
 
   List<Contacto> _contactos = new List<Contacto>();
+  bool banderaCargando = true;
 
 
 
@@ -29,10 +32,14 @@ class _CameraState extends State<Camera> {
 
 
   void loadContactos() async{
-    var contactos= await HttpHandler().fetchContactos();
+    List<Contacto> contactos= await HttpHandler().fetchContactos();
 
     setState(() {
-      _contactos.addAll(contactos);
+      if (contactos.length > 0) {
+        _contactos.addAll(contactos);
+        banderaCargando = false;
+      }
+      
     });
 
   }
@@ -87,14 +94,13 @@ class _CameraState extends State<Camera> {
 
 
 
-
-
-
-
-  @override
-  Widget build(BuildContext context) {
-   return new Container(
-     child: new RefreshIndicator(
+  Widget dibujarContactos() {
+    return new Container(
+     child: new LiquidPullToRefresh(
+        springAnimationDurationInMilliseconds: 350,
+        showChildOpacityTransition: true,
+        height: 80,
+        color: Theme.of(context).primaryColor,
         onRefresh: refrescarContactos,
         child:  new ListView.builder(
           itemCount: _contactos.length,
@@ -186,4 +192,19 @@ class _CameraState extends State<Camera> {
      ),
    );
   }
+
+
+
+
+  @override
+  Widget build(BuildContext context) {
+    return banderaCargando == true 
+    ? Container(
+      padding: EdgeInsets.only(bottom: 455),
+      child: LinearProgressIndicator(backgroundColor: Colors.white,) ,
+      ) 
+    
+    : dibujarContactos();
+  }
 }
+
