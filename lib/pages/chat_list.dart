@@ -1,15 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat/models/chat_model.dart';
 import 'package:flutter_chat/pages/chat_screen.dart';
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
 class ChatList extends StatefulWidget {
   @override
   _ChatListState createState() => new _ChatListState();
  }
 class _ChatListState extends State<ChatList> {
+
+
+  Future<void> funsionsita() async{
+    Future hola;
+    int cero;
+    
+    await hola;
+  }
+
   @override
   Widget build(BuildContext context) {
-   return new ListView.builder(
+   return new LiquidPullToRefresh(
+     onRefresh: funsionsita,
+     child: ListView.builder(
      itemCount: messageData.length,
      itemBuilder: (context, i) => new Column(
        children: <Widget>[
@@ -49,6 +61,7 @@ class _ChatListState extends State<ChatList> {
      ),
     ]
    )
+     )
    );
   }
 }
